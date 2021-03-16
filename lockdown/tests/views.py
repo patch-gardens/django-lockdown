@@ -57,6 +57,10 @@ def locked_view_with_ip_exception_ipv6_subnet(request):
     """View, locked except for the configured IPv6-subnet."""
     return HttpResponse('A locked view.')
 
+@lockdown(host_exceptions=['test.net'])
+def locked_view_with_host_exception(request):
+    """View, locked except for the configured host."""
+    return HttpResponse('A locked view.')
 
 @lockdown(extra_context={'foo': 'bar'})
 def locked_view_with_extra_context(request):

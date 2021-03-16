@@ -207,6 +207,19 @@ For example::
         '172.17.0.5',
     ]
 
+LOCKDOWN_HOST_EXCEPTIONS
+-------------------------------
+
+A list of hosts to remove lockdown for. A Patch addition. 
+
+For example::
+
+    LOCKDOWN_HOST_EXCEPTIONS = [
+        'test.net',
+        'sandbox.net',
+    ]
+
+
 LOCKDOWN_UNTIL
 --------------
 

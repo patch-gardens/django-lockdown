@@ -48,7 +48,7 @@ class LockdownMiddleware(object):
     def __init__(self, get_response=None, form=None, until_date=None,
                  after_date=None, logout_key=None, session_key=None,
                  url_exceptions=None, remote_addr_exceptions=None,
-                 trusted_proxies=None, extra_context=None, **form_kwargs):
+                 trusted_proxies=None, host_exceptions, extra_context=None, **form_kwargs):
         """Initialize the middleware, by setting the configuration values."""
         if logout_key is None:
             logout_key = getattr(settings,
@@ -68,6 +68,7 @@ class LockdownMiddleware(object):
         self.url_exceptions = url_exceptions
         self.remote_addr_exceptions = remote_addr_exceptions
         self.trusted_proxies = trusted_proxies
+        self.host_exceptions = host_exceptions
         self.extra_context = extra_context
 
     def __call__(self, request):
@@ -137,6 +138,12 @@ class LockdownMiddleware(object):
         for pattern in url_exceptions:
             if pattern.search(request.path):
                 return None
+
+        # Don't lock down if the host matches an exception pattern.
+        if self.host_exceptions:
+            for pattern in self.host_exceptions:
+                if request.META["REMOTE_HOST"] == pattern:
+                    return None
 
         # Don't lock down if the URL resolves to a whitelisted view.
         try:
