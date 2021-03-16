@@ -141,9 +141,12 @@ class LockdownMiddleware(object):
 
         # Don't lock down if the host matches an exception pattern.
         if self.host_exceptions:
-            for pattern in self.host_exceptions:
-                if request.META["REMOTE_HOST"] == pattern:
-                    return None
+            host_exceptions = self.host_exceptions
+        else:
+            host_exceptions = getattr(settings, 'LOCKDOWN_HOST_EXCEPTIONS', [])
+        for pattern in host_exceptions:
+            if request.META["REMOTE_HOST"] == pattern:
+                return None
 
         # Don't lock down if the URL resolves to a whitelisted view.
         try:
