@@ -48,7 +48,7 @@ class LockdownMiddleware(object):
     def __init__(self, get_response=None, form=None, until_date=None,
                  after_date=None, logout_key=None, session_key=None,
                  url_exceptions=None, remote_addr_exceptions=None,
-                 trusted_proxies=None, host_exceptions, extra_context=None, **form_kwargs):
+                 trusted_proxies=None, host_exceptions=None, extra_context=None, **form_kwargs):
         """Initialize the middleware, by setting the configuration values."""
         if logout_key is None:
             logout_key = getattr(settings,
